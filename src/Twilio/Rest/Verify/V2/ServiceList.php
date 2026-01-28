@@ -96,11 +96,23 @@ class ServiceList extends ListResource
                 $options['whatsappMsgServiceSid'],
             'Whatsapp.From' =>
                 $options['whatsappFrom'],
+            'Passkeys.RelyingParty.Id' =>
+                $options['passkeysRelyingPartyId'],
+            'Passkeys.RelyingParty.Name' =>
+                $options['passkeysRelyingPartyName'],
+            'Passkeys.RelyingParty.Origins' =>
+                $options['passkeysRelyingPartyOrigins'],
+            'Passkeys.AuthenticatorAttachment' =>
+                $options['passkeysAuthenticatorAttachment'],
+            'Passkeys.DiscoverableCredentials' =>
+                $options['passkeysDiscoverableCredentials'],
+            'Passkeys.UserVerification' =>
+                $options['passkeysUserVerification'],
             'VerifyEventSubscriptionEnabled' =>
                 Serialize::booleanToString($options['verifyEventSubscriptionEnabled']),
         ]);
 
-        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'application/json' ]);
         $payload = $this->version->create('POST', $this->uri, [], $data, $headers);
 
         return new ServiceInstance(
@@ -179,7 +191,8 @@ class ServiceList extends ListResource
             'PageSize' => $pageSize,
         ]);
 
-        $response = $this->version->page('GET', $this->uri, $params);
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'application/json']);
+        $response = $this->version->page('GET', $this->uri, $params, [], $headers);
 
         return new ServicePage($this->version, $response, $this->solution);
     }
